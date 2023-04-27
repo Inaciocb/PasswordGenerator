@@ -1,19 +1,21 @@
 import os
-import pyperclip
 import time
 from tkinter import *
 import subprocess
 from tkinter import font
+import tkinter.messagebox
+import platform
+
 
 # definir paleta de cores
 bg_color = '#183632' # verde escuro
 fg_color = '#F4F4F4' # cinza claro
-button_color = '#387780' # verde
-button_hover_color = '#007E33' # verde mais escuro
+button_color = '#387780' 
+button_hover_color = '#007E33' 
 text_color = '#F4F4F4' 
 
 root = Tk()
-root.title("Gerador de Senhas")
+root.title("Gerador de Senhas by Inacio Buemo")
 root.geometry("400x250")
 root.config(bg=bg_color)
 
@@ -50,41 +52,53 @@ lbl_senha.pack()
 senhaLabel = Label(root, text="", **label_style)
 senhaLabel.pack()
 
-# definir variável global para armazenar a senha gerada
 senha_gerada = ""
 
-# definir funções dos botões
+if (platform.system() == 'Windows' or 'Linux'):
+    os.system("g++ geradordesenha.cpp -o ../bin/gerador")
+else:
+    print("ERRO: SISTEMA OPERACIONAL DESCONHECIDO.")
+
+
 def gerar_senha():
     global senha_gerada
-    senha = subprocess.check_output("./geradordesenha.exe")
+    senha = subprocess.check_output("../bin/./gerador")
     senha_str = senha.decode().strip()
     lbl_senha.config(text=senha_str)
     senha_gerada = senha_str
 
+
 def copiar_senha():
     global senha_gerada
     if senha_gerada != "":
-        pyperclip.copy(senha_gerada)
+        root.clipboard_clear()
+        root.clipboard_append(senha_gerada)
+
 
 def limpar_senha():
     lbl_senha.config(text="")
     senhaLabel.config(text="")
     global senha_gerada
     senha_gerada = ""
-    pyperclip.copy("")
+   
 
 def salvar_senha(senha):
+    # Define o caminho absoluto para a pasta 'senhas_salvas'
+    diretorio = os.path.abspath('../senhas_salvas')
     # Verifica se o diretório 'senhas_salvas' existe, se não existir, cria
-    if not os.path.exists('senhas_salvas'):
-        os.makedirs('senhas_salvas')
+    if not os.path.exists(diretorio):
+        os.makedirs(diretorio)
     # Cria o nome do arquivo com base na quantidade de arquivos já existentes
-    arquivos_salvos = len(os.listdir('senhas_salvas'))
+    arquivos_salvos = len(os.listdir(diretorio))
     nome_arquivo = f'senha{arquivos_salvos+1}.txt'
     # Escreve a senha gerada no arquivo
-    with open(f'senhas_salvas/{nome_arquivo}', 'w') as arquivo:
+    with open(os.path.join(diretorio, nome_arquivo), 'w') as arquivo:
         arquivo.write(senha)
     # Exibe uma mensagem para o usuário
-    messagebox.showinfo('Senha Salva', f'Senha salva em senhas_salvas/{nome_arquivo}')
+    tkinter.messagebox.showinfo('Senha Salva', f'Senha salva em {os.path.join(diretorio, nome_arquivo)}')
+
+
+
 
 def salvar_senha_cpp(senha):
     subprocess.call(["./salvar_senha.exe", senha])

@@ -9,7 +9,7 @@
 int main(void)
 {
     srand(time(0) * 1000 + clock());
-    std::string arq = "ASCII.txt";
+    std::string arq = "../ASCII.txt";
     char senha[TAM_SENHA];
     std::ifstream file(arq);
 
@@ -37,7 +37,7 @@ int main(void)
     std::cout << std::endl;
 
     std::ofstream ofs;
-    ofs.open("senha.txt", std::ofstream::out | std::ofstream::trunc);
+    //ofs.open("senha.txt", std::ofstream::out | std::ofstream::trunc);
     ofs << senha;
     ofs.close();
 
