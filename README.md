@@ -1,2 +1,2 @@
 # PasswordGenerator
-Gerador de senhas seguras
+Gerador de senhas fortes
