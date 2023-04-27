@@ -4,6 +4,7 @@ import time
 from tkinter import *
 import subprocess
 from tkinter import font
+import platform
 
 # definir paleta de cores
 bg_color = '#183632' # verde escuro
@@ -50,13 +51,19 @@ lbl_senha.pack()
 senhaLabel = Label(root, text="", **label_style)
 senhaLabel.pack()
 
-# definir variável global para armazenar a senha gerada
 senha_gerada = ""
 
-# definir funções dos botões
 def gerar_senha():
     global senha_gerada
-    senha = subprocess.check_output("./geradordesenha.exe")
+
+    if (platform.system() == 'Windows'):
+        senha = subprocess.check_output("../bin/./gerador.exe")
+    elif(platform.system() == 'Linux'):
+        os.system("g++ gerador de senha -o ../bin/geradordesenha") 
+        senha = subprocess.check_output("./geradordesenha")
+    else:
+        print("ERRO: SISTEMA OPERACIONAL DESCONHECIDO.")
+    
     senha_str = senha.decode().strip()
     lbl_senha.config(text=senha_str)
     senha_gerada = senha_str
