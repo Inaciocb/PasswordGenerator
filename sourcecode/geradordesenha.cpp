@@ -37,6 +37,7 @@ int main(void)
     std::cout << std::endl;
 
     std::ofstream ofs;
+    //remova o comentário abaixo para salvar a senha em um arquivo txt toda vez que for gerada uma nova
     //ofs.open("senha.txt", std::ofstream::out | std::ofstream::trunc);
     ofs << senha;
     ofs.close();
