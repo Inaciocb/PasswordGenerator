@@ -6,8 +6,6 @@ from tkinter import font
 import tkinter.messagebox
 import platform
 
-
-
 bg_color = '#183632'
 fg_color = '#F4F4F4' 
 button_color = '#387780' 
