@@ -3,12 +3,19 @@
 #include <time.h>
 #include <fstream>
 #include <string>
+#include <random>
+#include <functional>
 
 #define TAM_SENHA 30
 
 int main(void)
 {
-    srand(time(0) * 1000 + clock());
+
+
+    int seed = time(0) * 1000 + clock();
+    auto dice = std::bind(std::uniform_int_distribution<>(1,6),std::mt19937(seed));
+    int twoDiceRoll = dice() + dice();
+    srand(seed);
     std::string arq = "../ASCII.txt";
     char senha[TAM_SENHA];
     std::ifstream file(arq);
@@ -37,7 +44,6 @@ int main(void)
     std::cout << std::endl;
 
     std::ofstream ofs;
-    //remova o comentário abaixo para salvar a senha em um arquivo txt toda vez que for gerada uma nova
     //ofs.open("senha.txt", std::ofstream::out | std::ofstream::trunc);
     ofs << senha;
     ofs.close();
